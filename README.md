@@ -1,7 +1,7 @@
 # Capstone Project: Credit Risk Assessment
 
-**Capstone Notebook:** https://github.com/AILCS/Capstone/blob/main/Capstone%20Project%20-%20Credit%20Risk%20Assessment%20(Jupyter%20Notebook).ipynb  
-
+**Capstone Notebook:** https://github.com/AILCS/Capstone/blob/main/Capstone_Project_Credit_Risk_Assessment_(Jupyter_Notebook).ipynb  
+  
 ## Credit Risk Assessment Final Report
 
 ### **1) <ins> Define the Problem Statement**</ins>  
