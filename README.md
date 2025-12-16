@@ -145,7 +145,9 @@ Key supervised machine learning principles were applied to develop a regression 
 
 In selecting the modelling techniques, a deliberate focus was placed on model simplicity, explainability, and transparency, given the importance of interpretability in financial risk assessments. Simple, well-understood models allow credit analysts and regulatory stakeholders to more easily trace how input features influence predictions, making them preferable in sensitive decision-making contexts such as Credit Scoring.
 
-Four models were constructed to explore different learning approaches and regularisation techniques:
+At the same time, the potential of more complex models, such as Neural Networks, was explored to achieve higher predictive precision. While these models are less inherently interpretable, they can capture intricate patterns and nonlinear relationships in the data, offering superior accuracy for Credit Risk prediction. This dual approach balances the trade-off between predictive performance and model explainability, allowing for highly accurate predictions while retaining simpler models for transparency when needed.
+  
+Five models were constructed to explore these trade-offs:
 1. **Linear Regression –** established a baseline to assess the degree of polynomial features that best captured the linear relationship with the target variable.
 
 2. **Ridge Regression (L2 regularisation) –** introduced to manage multicollinearity and reduce overfitting by penalising excessively large coefficient values.
@@ -154,7 +156,9 @@ Four models were constructed to explore different learning approaches and regula
 
 4. **Decision Tree Regressor –** implemented to capture nonlinear relationships and complex feature interactions without the need for explicit feature transformations.
 
-For model optimisation, **GridSearchCV** with **5-fold Cross-Validation** was applied to identify the optimal hyperparameter values for Ridge and Lasso regression models. This process reinforced the concept of model validation, ensuring that performance metrics generalised well beyond the training data. The data was divided using an **80/20 train-test split**, following standard practice to prevent data leakage and to fairly evaluate model performance on unseen data.
+5. **Neural Network Regressor –** included as a flexible non-linear model capable of learning complex patterns in the data, allowing comparison with simpler models in terms of predictive performance.
+
+The data was divided using an **80/20 train-test split**, following standard practice to prevent data leakage and to fairly evaluate model performance on unseen data. For model optimisation, **GridSearchCV** with **5-fold Cross-Validation** was applied to identify the optimal hyperparameter values for Ridge and Lasso regression models. This process reinforced the concept of model validation, ensuring that performance metrics generalised well beyond the training data. The inclusion of the Neural Network model also provides insight into potential gains from more complex models, balancing accuracy with interpretability considerations.  
 
 
 ### **6) <ins> Model Evaluation**</ins>  
@@ -165,20 +169,24 @@ Evaluation metrics were selected to demonstrate core regression evaluation conce
 <br>  
 <p align="center"><strong>Figure 6:</strong> Model Evaluation Summary</p>
 <br>  
-<p align="center"><img width="765" height="650" alt="image" src="https://github.com/user-attachments/assets/7794748d-384c-4bb3-89f8-a9ee54ea7b50" /></p>
+<p align="center"><img width="940" height="739" alt="image" src="https://github.com/user-attachments/assets/d937783d-23e0-4bee-8eac-420fda12dcae" /></p>
 
-Model comparison highlighted the importance of regularisation and model complexity:  
-- **Linear Regression** achieved a reasonable fit (**Test RMSE = 1.8220** and **Test R² = 0.9434**), but regularised models performed better.
-- **Ridge Regression (α = 0.1)** achieved the best balance between bias and variance (**Test RMSE = 1.3948** and **R² = 0.9668**) demonstrating strong generalisation.
-- **Lasso Regression (α = 0.001)** performed comparably (**Test RMSE = 1.4006** and **R² = 0.9665**) but slightly underperformed Ridge due to coefficient shrinkage.
-- **Decision Tree Regressor** achieved perfect training accuracy but lower test performance (**Test RMSE = 1.6384** and **R² = 0.9542**), exemplifying the concept of overfitting.  
+Model comparison demonstrated the trade-off between model complexity, predictive power, and interpretability:  
+- **Linear Regression** achieved a reasonable fit (**Test RMSE = 1.8220** and **Test R² = 0.9434**), serving as a baseline but underperforming compared to regularised models.
+- **Ridge Regression (α = 0.1)** performed well (**Test RMSE = 1.3948** and **R² = 0.9668**) offering strong interpretability and stable generalisation, though not the highest predictive accuracy.
+- **Lasso Regression (α = 0.001)** performed comparably (**Test RMSE = 1.4006** and **R² = 0.9665**) to Ridge Regression but is slightly less stable due to coefficient shrinkage.
+- **Decision Tree Regressor** achieved perfect training accuracy but lower test performance (**Test RMSE = 1.6384** and **R² = 0.9542**), illustrating the concept of overfitting.
+- **Neural Network Regressor** achieved the highest predictive accuracy (**Test RMSE = 1.0874** and **R² = 0.9798**), demonstrating superior predictive power, though with increased complexity and reduced interpretability compared to the simpler models.  
 
 These results illustrate key learning outcomes:  
-- **Regularisation** improves model robustness by controlling coefficient magnitude.
-- **Cross-validation** ensures reliable performance evaluation across data subsets.
-- **Bias–variance trade-off** explains why the Ridge model outperformed both unregularised and overfitted alternatives.  
+- **Regularisation** improves model robustness by controlling coefficient magnitude, helping to prevent overfitting.
+- **Cross-validation** ensures reliable performance evaluation across data subsets, ensuring generalisability.
+- **Bias–variance trade-off** explains why the Ridge model achieved strong performance compared to both unregularised Linear Regression and the overfitted Decision Tree.
+- **Model complexity vs predictive power** demonstrates that the Neural Network Regressor delivers the highest predictive accuracy, capturing complex patterns in the data and enabling more precise Credit Risk predictions for better-informed lending decisions.  
 
-The Ridge Regression model was therefore selected as the final model. It demonstrated superior accuracy, interpretability, and stability. Key predictors identified include **CreditScore, LengthOfCreditHistory²,** and **DebtToIncomeRatio** emerging for higher Credit Risk, and **CreditScore², TotalAssets,** and **LengthOfCreditHistory** for lower Credit Risk.
+Based on the model evaluation, the **Neural Network Regressor** was selected as the primary model due to its **highest predictive accuracy** among all candidates.   
+
+In terms of interpretability, **Ridge Regression** remains a strong alternative when explainability is critical, offering slightly lower accuracy but clear and actionable insights for stakeholders. Key predictors identified include **CreditScore, LengthOfCreditHistory²,** and **DebtToIncomeRatio** emerging for higher Credit Risk, and **CreditScore², TotalAssets,** and **LengthOfCreditHistory** for lower Credit Risk.
 
 
 ### **7) <ins> Deployment**</ins>  
@@ -190,13 +198,13 @@ I am pleased to share an update on the Credit Risk Score Prediction Model develo
 
 Implementing this model provides several important business benefits:
 
-1. Faster and more consistent decisions: The model can assess risk in seconds, reducing manual review time and ensuring that every applicant is evaluated using the same criteria.
+1.	Faster and more consistent decisions: The model can assess risk in seconds, reducing manual review time and ensuring that every applicant is evaluated using the same criteria.
 
-2. Improved risk management: By identifying higher-risk applicants more reliably, we can minimise potential loan defaults and protect the organisation from avoidable financial losses.
+2.	Improved risk management: By identifying higher-risk applicants more reliably, we can minimise potential loan defaults and protect the organisation from avoidable financial losses.
 
-3. Better customer targeting: The model helps us recognise applicants with strong credit potential, allowing us to approve quality loans more confidently and offer more competitive products to low-risk customers.
+3.	Better customer targeting: The model helps us recognise applicants with strong credit potential, allowing us to approve quality loans more confidently and offer more competitive products to low-risk customers.
 
-4. Enhanced transparency: Because the model uses clearly defined and interpretable inputs, it supports fair and explainable lending decisions — important for customer trust and compliance.
+4.	High accuracy with interpretability options: The primary model provides highly accurate predictions by capturing complex patterns in applicant data, enabling more precise Credit Risk assessment. In parallel, a secondary, more interpretable model offers clear insights into the factors driving risk, supporting transparency and explainable decision-making when needed.
 
 Overall, the deployment of this prediction model will strengthen our lending decisions, reduce operational costs, and support sustainable portfolio growth. I would be happy to discuss how this can be integrated into our existing workflows and the potential next steps for implementation.
 
